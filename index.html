@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Religionskunskap – Riter & Högtider</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F0E8;
+    --card: #FFFDF7;
+    --ink: #1A1410;
+    --muted: #7A6E62;
+    --accent: #C4502A;
+    --accent2: #2A6E8C;
+    --green: #2E6B3E;
+    --green-bg: #EAF3E0;
+    --red-bg: #FAE8E2;
+    --border: rgba(26,20,16,0.12);
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem 4rem;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+  header p {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .ornament {
+    display: block;
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+    margin: 12px auto;
+    border-radius: 2px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem 2rem 1.5rem;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 2px 20px rgba(26,20,16,0.06);
+  }
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .progress-bar-bg {
+    flex: 1;
+    height: 5px;
+    background: rgba(26,20,16,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .progress-text {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .cat-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .question {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.1rem, 3vw, 1.35rem);
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1rem; }
+  .opt {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  }
+  .opt:hover:not(:disabled) {
+    background: rgba(196,80,42,0.06);
+    border-color: var(--accent);
+    transform: translateX(3px);
+  }
+  .opt:disabled { cursor: default; }
+  .opt.correct { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+  .opt.wrong { background: var(--red-bg); border-color: var(--accent); color: var(--accent); }
+  .opt.reveal { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+  .feedback {
+    font-size: 14px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-top: 4px;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .feedback.correct { background: var(--green-bg); color: var(--green); }
+  .feedback.wrong { background: var(--red-bg); color: var(--accent); }
+  .open-textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--card);
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    transition: border-color 0.15s;
+    margin-bottom: 10px;
+  }
+  .open-textarea:focus { border-color: var(--accent2); }
+  .show-ans-btn {
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: background 0.15s;
+  }
+  .show-ans-btn:hover { background: rgba(26,20,16,0.05); }
+  .ans-reveal {
+    background: var(--green-bg);
+    color: var(--green);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .ans-reveal strong { font-weight: 500; }
+  .next-btn {
+    margin-top: 12px;
+    padding: 12px 28px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .next-btn:hover { background: #A33E1F; transform: translateY(-1px); }
+  .score-screen {
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+  .score-fraction {
+    font-family: 'Fraunces', serif;
+    font-size: 72px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .score-denom { font-size: 48px; color: var(--muted); }
+  .score-msg {
+    font-size: 18px;
+    color: var(--ink);
+    margin: 16px 0 8px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+  .score-sub { font-size: 14px; color: var(--muted); margin-bottom: 2rem; }
+  .restart-btn {
+    padding: 12px 32px;
+    border-radius: 10px;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .restart-btn:hover { opacity: 0.85; }
+  @media (max-width: 480px) {
+    .card { padding: 1.5rem 1.25rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Riter &amp; Högtider</h1>
+  <span class="ornament"></span>
+  <p>Religionskunskap — provförberedelse</p>
+</header>
+
+<div class="card" id="quiz"></div>
+
+<script>
+const all = [
+  {cat:"Initiationsriter", q:"Vad är en initiationsrit?", type:"mc", opts:["En rit som markerar övergången från ett livsstadium till ett annat","En religiös ceremoni som firas varje år","En bön som läses vid begravning"], ans:0},
+  {cat:"Initiationsriter", q:"Vilken initiationsrit tillhör judendomen?", type:"mc", opts:["Bar mitsva","Jatakarman","Dopet"], ans:0},
+  {cat:"Initiationsriter", q:"När i livet kan en initiationsrit ske?", type:"mc", opts:["Endast vid födseln","Endast vid döden","Genom hela livet, vid övergångar som födsel och puberteten"], ans:2},
+  {cat:"Pubertetsriter", q:"Heter hinduismens pubertetsrit Upanayana?", type:"mc", opts:["Sant","Falskt"], ans:0},
+  {cat:"Pubertetsriter", q:"Vad heter buddhismens pubertetsrit?", type:"mc", opts:["Upanayana","Novisordination","Bar mitsva"], ans:1},
+  {cat:"Pubertetsriter", q:"Vad innebär den kristna pubertetsriten konfirmation?", type:"open", ans:"En pubertetsrit som bekräftar den kristna tron. Konfirmanden bekräftar sin tro och välkomnas som vuxen i kyrkan."},
+  {cat:"Bröllopsriter", q:"Vad trampar brudgummen på i slutet av den judiska bröllopsceremonin?", type:"mc", opts:["En blomma","Ett glas","En bok"], ans:1},
+  {cat:"Bröllopsriter", q:"Vad är Mahr inom islam?", type:"mc", opts:["En gåva som brudgummen ger till bruden","En stor fest efter vigseln","Den heliga skriften"], ans:0},
+  {cat:"Bröllopsriter", q:"Vilket material är snöret som spänns mellan parens huvud under ett buddistiskt bröllop?", type:"mc", opts:["Silke","Lin","Bomull"], ans:2},
+  {cat:"Begravningsriter", q:"Vad kallas begravningsbönen under en muslimsk begravning?", type:"mc", opts:["Ghusl","Kafan","Salat al-Janazah"], ans:2},
+  {cat:"Begravningsriter", q:"Hur går en traditionell kristen begravning till? Nämn minst två viktiga delar.", type:"open", ans:"Hålls i kyrka, präst leder, böner och psalmer, begravning eller kremering."},
+  {cat:"Begravningsriter", q:"Nämn tre viktiga aspekter inom en buddhistisk begravning.", type:"open", ans:"Tre av dessa: Stillsamhet, Respekt, Recitering av sutror, Ge god karma till den avlidne."},
+  {cat:"Kalendariska riter", q:"Vad är en kalendarisk rit?", type:"mc", opts:["En religiös tradition som återkommer varje år eller flera gånger om året","En religiös tradition som händer en gång i livet","En typ av kalender"], ans:0},
+  {cat:"Kalendariska riter", q:"Vad heter den judiska vilodagen?", type:"mc", opts:["Shabbat","Sukkot","Holi"], ans:0},
+  {cat:"Kalendariska riter", q:"Vilken av dessa är INTE en hinduisk högtid?", type:"mc", opts:["Holi","Diwali","Chanukka"], ans:2},
+  {cat:"Kalendariska riter", q:"Stämmer det att Ramadan firar Buddhas upplysning?", type:"mc", opts:["Sant","Falskt"], ans:1},
+  {cat:"Kalendariska riter", q:"Vad uppmärksammar Vesak?", type:"mc", opts:["Buddhas upplysning","Buddhas liv (födelse, upplysning och död)","Fastan inom buddhismen"], ans:1},
+  {cat:"Kalendariska riter", q:"Vad är Hajj och till vilken stad reser muslimer?", type:"open", ans:"Hajj är en pilgrimsfärd inom islam. Muslimer reser till Mecka. Det är en av islams fem pelare."},
+  {cat:"Kalendariska riter", q:"Markerar Id al-fitr slutet på fastan?", type:"mc", opts:["Sant","Falskt"], ans:0},
+  {cat:"Kalendariska riter", q:"Hur firar buddhister Vesak?", type:"open", ans:"Meditation, lyssnar på undervisning och gör goda handlingar för att samla god karma. Högtiden betonar Buddhas lära som ett ljus för världen."},
+];
+
+function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+let questions, idx, score, answered;
+
+function init(){
+  questions = shuffle(all).map(q => {
+    if(q.type !== 'mc') return {...q};
+    const indexed = q.opts.map((o,i) => ({o, i}));
+    const shuffled = shuffle(indexed);
+    return {
+      ...q,
+      opts: shuffled.map(x => x.o),
+      ans: shuffled.findIndex(x => x.i === q.ans)
+    };
+  });
+  idx=0; score=0; answered=false;
+  render();
+}
+
+function render(){
+  const el = document.getElementById('quiz');
+  if(idx >= questions.length){
+    const pct = Math.round(score/questions.length*100);
+    const msg = score===questions.length ? 'Perfekt resultat!' : score>=7 ? 'Bra jobbat!' : score>=5 ? 'Godkänt – öva lite till!' : 'Öva mer och försök igen!';
+    el.innerHTML = `<div class="score-screen">
+      <div class="score-fraction">${score}<span class="score-denom">/${questions.length}</span></div>
+      <div class="score-msg">${msg}</div>
+      <div class="score-sub">${pct}% rätt svar</div>
+      <button class="restart-btn" onclick="init()">Starta om</button>
+    </div>`;
+    return;
+  }
+  const q = questions[idx];
+  const pct = Math.round(idx/questions.length*100);
+  let body = '';
+  if(q.type==='mc'){
+    body = `<div class="options">${q.opts.map((o,i)=>`<button class="opt" id="opt${i}" onclick="pick(${i})">${o}</button>`).join('')}</div>`;
+  } else {
+    body = `<textarea class="open-textarea" id="oi" placeholder="Skriv ditt svar här..."></textarea>
+      <button class="show-ans-btn" onclick="showAns()">Visa facit</button>
+      <div id="ar" style="display:none"></div>`;
+  }
+  el.innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+      <span class="progress-text">${idx+1} / ${questions.length}</span>
+    </div>
+    <span class="cat-badge">${q.cat}</span>
+    <div class="question">${q.q}</div>
+    ${body}
+    <div id="fb"></div>
+    <div id="nw" style="display:none"><button class="next-btn" onclick="next()">${idx+1<questions.length?'Nästa fråga →':'Se resultat →'}</button></div>
+  `;
+}
+
+function pick(i){
+  if(answered) return;
+  answered=true;
+  const q=questions[idx];
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb');
+  if(i===q.ans){
+    document.getElementById('opt'+i).className='opt correct';
+    fb.innerHTML='<div class="feedback correct">✓ Rätt svar!</div>';
+    score++;
+  } else {
+    document.getElementById('opt'+i).className='opt wrong';
+    document.getElementById('opt'+q.ans).className='opt reveal';
+    fb.innerHTML=`<div class="feedback wrong">✗ Fel. Rätt svar: <strong>${q.opts[q.ans]}</strong></div>`;
+  }
+  document.getElementById('nw').style.display='block';
+}
+
+function showAns(){
+  if(answered) return;
+  answered=true;
+  const q=questions[idx];
+  const ar=document.getElementById('ar');
+  ar.style.display='block';
+  ar.innerHTML=`<div class="ans-reveal"><strong>Facit:</strong> ${q.ans}</div>`;
+  document.getElementById('nw').style.display='block';
+}
+
+function next(){
+  idx++; answered=false; render();
+}
+
+init();
+</script>
+</body>
+</html>
