@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Religionsprov</title>
+<title>Religionskunskap – Riter & Högtider</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -236,7 +236,7 @@
 <body>
 <header>
   <h1>Riter &amp; Högtider</h1>
-  <span class="ornament"></span> Lycka till🙏😭
+  <span class="ornament"></span>
   <p>Religionskunskap — provförberedelse</p>
 </header>
 
@@ -288,7 +288,7 @@ function render(){
   const el = document.getElementById('quiz');
   if(idx >= questions.length){
     const pct = Math.round(score/questions.length*100);
-    const msg = score===questions.length ? 'Perfekt resultat!' : score>=7 ? 'Bra jobbat!' : score>=5 ? 'Godkänt – öva lite till!' : 'Öva mer och försök igen!';
+    const msg = score>=15 ? 'Blir nog A++++++++++++ 🤑🤑🤑🤑' : 'Lycka till 😭🙏🥀';
     el.innerHTML = `<div class="score-screen">
       <div class="score-fraction">${score}<span class="score-denom">/${questions.length}</span></div>
       <div class="score-msg">${msg}</div>
